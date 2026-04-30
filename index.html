@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>性格测试 — 发现真实的你</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: linear-gradient(135deg, #faf7f2 0%, #f5ebe0 50%, #fdf8f6 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .serif {
+      font-family: 'Noto Serif SC', serif;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .welcome-content {
+      text-align: center;
+      max-width: 42rem;
+      z-index: 10;
+    }
+
+    .icon-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 6rem;
+      height: 6rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-circle svg {
+      width: 3rem;
+      height: 3rem;
+      color: #cc6b4c;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+
+    .description {
+      font-size: 1rem;
+      color: #9ca3af;
+      margin-bottom: 3rem;
+      max-width: 28rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .tag svg {
+      width: 1rem;
+      height: 1rem;
+      color: #cc6b4c;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.25rem 2.5rem;
+      background: linear-gradient(to right, #b55238, #cc6b4c);
+      color: white;
+      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 1.125rem;
+      text-decoration: none;
+      box-shadow: 0 10px 40px rgba(204, 107, 76, 0.3);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 50px rgba(204, 107, 76, 0.4);
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: #374151;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #374151;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .stats {
+      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: #d1d5db;
+    }
+
+    /* Question Screen */
+    .quiz-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .progress-bar {
+      margin-bottom: 3rem;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-text {
+      font-size: 0.875rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .progress-percent {
+      font-size: 0.875rem;
+      color: #cc6b4c;
+      font-weight: 500;
+    }
+
+    .progress-track {
+      height: 0.5rem;
+      background: #e5e7eb;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #cc6b4c, #db8f75);
+      border-radius: 9999px;
+      transition: width 0.5s ease;
+    }
+
+    .question-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .question-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(204, 107, 76, 0.1);
+      color: #cc6b4c;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-text {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #1f2937;
+      line-height: 1.3;
+      margin-bottom: 3rem;
+    }
+
+    .options {
+      display: grid;
+      gap: 1.5rem;
+      max-width: 48rem;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .option-card {
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 2px solid transparent;
+      border-radius: 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    }
+
+    .option-card:hover {
+      transform: scale(1.02) translateY(-0.25rem);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(204, 107, 76, 0.2);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    }
+
+    .option-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: rgba(204, 107, 76, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #cc6b4c;
+    }
+
+    .option-card:hover .option-icon {
+      background: rgba(204, 107, 76, 0.2);
+    }
+
+    .option-text {
+      font-size: 1.125rem;
+      color: #374151;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* Result Screen */
+    .result-container {
+      text-align: center;
+      max-width: 42rem;
+      z-index: 10;
+    }
+
+    .result-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      font-size: 3.5rem;
+    }
+
+    .result-type {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      border-radius: 9999px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .result-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.75rem;
+    }
+
+    .result-subtitle {
+      font-size: 1.25rem;
+      color: #6b7280;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .result-description {
+      font-size: 1.125rem;
+      color: #4b5563;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      padding: 0 1rem;
+    }
+
+    .result-traits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .trait {
+      padding: 0.5rem 1.25rem;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    @media (min-width: 640px) {
+      .result-actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(2rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .slide-up {
+      animation: slideUp 0.5s ease-out;
+    }
+
+    .scale-in {
+      animation: scaleIn 0.4s ease-out;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Background decoration */
+    .bg-decoration {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-decoration::before,
+    .bg-decoration::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(3rem);
+    }
+
+    .bg-decoration::before {
+      width: 20rem;
+      height: 20rem;
+      top: 5rem;
+      left: 2.5rem;
+      background: rgba(204, 107, 76, 0.15);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .bg-decoration::after {
+      width: 24rem;
+      height: 24rem;
+      bottom: 8rem;
+      right: 4rem;
+      background: rgba(212, 165, 116, 0.15);
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2rem); }
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 3.5rem;
+      }
+      .question-text {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome Screen -->
+  <div id="welcome-screen" class="container">
+    <div class="bg-decoration"></div>
+    <div class="welcome-content fade-in">
+      <div class="icon-circle scale-in">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+        </svg>
+      </div>
+      <h1 class="serif slide-up">性格测试</h1>
+      <p class="subtitle slide-up">12个问题，发现真实的你</p>
+      <p class="description slide-up">每个人都是独一无二的存在。就像指纹一样，你的性格也有专属的印记。无需注册，测完即得，可分享给朋友对比。</p>
+      
+      <div class="tags slide-up">
+        <div class="tag">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+            <path d="M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7"/>
+          </svg>
+          科学维度
+        </div>
+        <div class="tag">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+          深度解析
+        </div>
+        <div class="tag">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          分享对比
+        </div>
+      </div>
+      
+      <button class="btn slide-up" onclick="startQuiz()">
+        <span>开始测试</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </button>
+      
+      <p class="stats slide-up">已有 12,580+ 人参与测试</p>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quiz-screen" class="quiz-container hidden">
+    <div class="progress-bar">
+      <div class="progress-info">
+        <span class="progress-text">问题 <span id="current-num">1</span> / 12</span>
+        <span class="progress-percent" id="progress-percent">8%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 8%"></div>
+      </div>
+    </div>
+    
+    <div class="question-card">
+      <span class="question-badge">Question <span id="q-number">1</span></span>
+      <h2 class="question-text serif" id="question-text">问题加载中...</h2>
+    </div>
+    
+    <div class="options">
+      <div class="option-card" onclick="handleAnswer('A')">
+        <div class="option-icon">A</div>
+        <p class="option-text" id="option-a">选项 A</p>
+      </div>
+      <div class="option-card" onclick="handleAnswer('B')">
+        <div class="option-icon">B</div>
+        <p class="option-text" id="option-b">选项 B</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result-screen" class="container hidden">
+    <div class="result-container fade-in">
+      <div class="result-icon" id="result-icon" style="background-color: #cc6b4c;">🎯</div>
+      <span class="result-type" id="result-type" style="background-color: #cc6b4c;">INTJ</span>
+      <h1 class="result-title serif" id="result-name">建筑师</h1>
+      <p class="result-subtitle" id="result-title">战略思维的大师</p>
+      <p class="result-description" id="result-description">描述内容...</p>
+      
+      <div class="result-traits" id="result-traits">
+        <span class="trait">逻辑严密</span>
+        <span class="trait">独立自主</span>
+      </div>
+      
+      <div class="result-actions">
+        <button class="btn btn-secondary" onclick="shareResult()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <path d="M8.59 13.51l6.83 3.98"/>
+            <path d="M15.41 6.51l-6.82 3.98"/>
+          </svg>
+          <span>分享结果</span>
+        </button>
+        <button class="btn btn-outline" onclick="restartQuiz()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+            <path d="M16 21h5v-5"/>
+          </svg>
+          <span>重新测试</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 测试题目
+    const questions = [
+      {
+        id: 1,
+        question: "周末到了，你更倾向于如何度过？",
+        optionA: { text: "约上三五好友，去热闹的聚会或活动", type: "E" },
+        optionB: { text: "独自在家，享受安静的阅读或观影时光", type: "I" },
+      },
+      {
+        id: 2,
+        question: "面对一个复杂的问题时，你通常会？",
+        optionA: { text: "关注具体的事实和细节，一步步分析", type: "S" },
+        optionB: { text: "先把握整体概念，寻找隐藏的模式和可能性", type: "N" },
+      },
+      {
+        id: 3,
+        question: "朋友遇到困难向你倾诉，你的第一反应是？",
+        optionA: { text: "给予实际的建议和解决方案", type: "T" },
+        optionB: { text: "先表达理解和共情，给予情感支持", type: "F" },
+      },
+      {
+        id: 4,
+        question: "你的日程安排通常是怎样的？",
+        optionA: { text: "提前规划好，按计划有条不紊地进行", type: "J" },
+        optionB: { text: "随性而为，根据当下的心情和情况决定", type: "P" },
+      },
+      {
+        id: 5,
+        question: "在一个陌生的社交场合，你会？",
+        optionA: { text: "主动上前自我介绍，结识新朋友", type: "E" },
+        optionB: { text: "等待别人先来找你，或安静地待在角落观察", type: "I" },
+      },
+      {
+        id: 6,
+        question: "你更欣赏哪种艺术风格？",
+        optionA: { text: "写实主义，真实还原生活中的美好瞬间", type: "S" },
+        optionB: { text: "抽象表现主义，激发无限的想象空间", type: "N" },
+      },
+      {
+        id: 7,
+        question: "做重要决定时，你更依赖？",
+        optionA: { text: "逻辑分析和客观数据，理性权衡利弊", type: "T" },
+        optionB: { text: "内心的感受和价值观，听从直觉的指引", type: "F" },
+      },
+      {
+        id: 8,
+        question: "面对突如其来的变化，你的态度是？",
+        optionA: { text: "感到不安，更喜欢稳定和可预期的生活", type: "J" },
+        optionB: { text: "觉得刺激，享受未知带来的新鲜感", type: "P" },
+      },
+      {
+        id: 9,
+        question: "充电放松的最佳方式是？",
+        optionA: { text: "参加热闹的派对或集体活动", type: "E" },
+        optionB: { text: "一个人去散步、冥想或独处", type: "I" },
+      },
+      {
+        id: 10,
+        question: "学习新技能时，你更喜欢？",
+        optionA: { text: "按照教程一步步实践，注重基础", type: "S" },
+        optionB: { text: "先了解原理和框架，再自由发挥", type: "N" },
+      },
+      {
+        id: 11,
+        question: "团队合作中，你通常扮演的角色是？",
+        optionA: { text: "理性的协调者，确保目标高效达成", type: "T" },
+        optionB: { text: "团队的粘合剂，维护和谐的氛围", type: "F" },
+      },
+      {
+        id: 12,
+        question: "旅行时，你更喜欢？",
+        optionA: { text: "提前做好详细的攻略和行程规划", type: "J" },
+        optionB: { text: "说走就走，在旅途中发现惊喜", type: "P" },
+      },
+    ];
+
+    // 性格类型结果
+    const personalityTypes = {
+      ISTJ: {
+        name: "检查者",
+        title: "沉稳可靠的守护者",
+        description: "你务实、可靠，重视责任和承诺。像一座坚实的山峰，给身边的人带来安全感。你做事有条理，注重细节，是团队中值得信赖的中坚力量。",
+        traits: ["严谨细致", "责任心强", "实事求是", "值得信赖"],
+        color: "#5d6d7e",
+        emoji: "🛡️",
+      },
+      ISFJ: {
+        name: "保护者",
+        title: "温柔体贴的守护天使",
+        description: "你善良、体贴，总是默默关心身边的人。像春日的暖阳，用行动温暖他人。你有强烈的责任感，愿意为他人付出，是朋友圈中的暖心存在。",
+        traits: ["善解人意", "忠诚可靠", "耐心细致", "乐于助人"],
+        color: "#7dcea0",
+        emoji: "🤝",
+      },
+      INFJ: {
+        name: "提倡者",
+        title: "深邃洞察的理想主义者",
+        description: "你富有洞察力，追求有意义的人生。像夜空中最亮的星，指引着理想的方向。你理解他人，坚持信念，常常能看到别人看不到的可能性。",
+        traits: ["富有远见", "洞察敏锐", "坚持理想", "深刻思考"],
+        color: "#9b59b6",
+        emoji: "🔮",
+      },
+      INTJ: {
+        name: "建筑师",
+        title: "战略思维的大师",
+        description: "你独立、理性，拥有卓越的战略眼光。像一位运筹帷幄的将军，总能找到最高效的解决方案。你追求知识，善于规划，是问题解决的高手。",
+        traits: ["逻辑严密", "独立自主", "目标导向", "创新思维"],
+        color: "#2c3e50",
+        emoji: "🎯",
+      },
+      ISTP: {
+        name: "鉴赏家",
+        title: "冷静理性的实践者",
+        description: "你灵活、务实，善于解决实际问题。像一位熟练的工匠，能够巧妙地处理各种挑战。你喜欢探索事物的运作原理，是天生的技术专家。",
+        traits: ["灵活应变", "善于分析", "动手能力强", "冷静客观"],
+        color: "#5dade2",
+        emoji: "🔧",
+      },
+      ISFP: {
+        name: "探险家",
+        title: "随性自由的艺术家",
+        description: "你敏感、随性，拥有独特的审美眼光。像一阵清风，带来意想不到的美好。你活在当下，追求内心的和谐，用艺术的眼光看待世界。",
+        traits: ["艺术气质", "随和包容", "感受敏锐", "追求自由"],
+        color: "#f39c12",
+        emoji: "🎨",
+      },
+      INFP: {
+        name: "调停者",
+        title: "诗意浪漫的梦想家",
+        description: "你理想主义、富有同理心，追求真实与美好。像一首温柔的诗，诉说着内心的情感。你重视价值观，渴望让世界变得更美好。",
+        traits: ["富有创意", "情感丰富", "追求意义", "真诚待人"],
+        color: "#e91e63",
+        emoji: "🌸",
+      },
+      INTP: {
+        name: "逻辑学家",
+        title: "好奇求知的思想家",
+        description: "你充满好奇心，热爱探索理论和概念。像一位孜孜不倦的学者，在知识的海洋中遨游。你逻辑严密，善于发现系统中的不一致之处。",
+        traits: ["思维缜密", "客观理性", "求知欲强", "善于创新"],
+        color: "#3498db",
+        emoji: "💡",
+      },
+      ESTP: {
+        name: "企业家",
+        title: "活力四射的行动派",
+        description: "你精力充沛，喜欢冒险和挑战。像一团燃烧的火焰，带来无限的能量和热情。你活在当下，善于抓住机会，是解决问题的高手。",
+        traits: ["行动力强", "乐观积极", "善于应变", "魅力十足"],
+        color: "#e74c3c",
+        emoji: "⚡",
+      },
+      ESFP: {
+        name: "表演者",
+        title: "热情洋溢的乐天派",
+        description: "你活泼、外向，是人群中的焦点。像一场精彩的演出，总能带来欢乐和惊喜。你热爱生活，享受当下，用热情感染着身边的每一个人。",
+        traits: ["活力充沛", "幽默风趣", "善于社交", "随遇而安"],
+        color: "#ff9800",
+        emoji: "🎭",
+      },
+      ENFP: {
+        name: "竞选者",
+        title: "充满激情的创意者",
+        description: "你热情、富有创意，总能看到无限可能。像一道彩虹，为世界带来色彩和活力。你善于激励他人，追求自由，是梦想的追逐者。",
+        traits: ["创意无限", "热情洋溢", "善于鼓舞", "适应力强"],
+        color: "#9c27b0",
+        emoji: "🌈",
+      },
+      ENTP: {
+        name: "辩论家",
+        title: "机智灵活的挑战者",
+        description: "你聪明、机智，喜欢挑战传统观念。像一位睿智的辩手，总能从不同角度看待问题。你思维敏捷，善于创新，是突破常规的先锋。",
+        traits: ["思维敏捷", "口才出众", "勇于创新", "知识渊博"],
+        color: "#00bcd4",
+        emoji: "🗡️",
+      },
+      ESTJ: {
+        name: "总经理",
+        title: "高效务实的管理者",
+        description: "你果断、务实，是天生的领导者。像一座灯塔，指引团队朝着目标前进。你重视效率和秩序，善于组织，能够把事情安排得井井有条。",
+        traits: ["组织能力强", "务实高效", "责任心重", "坚定果断"],
+        color: "#795548",
+        emoji: "👔",
+      },
+      ESFJ: {
+        name: "执政官",
+        title: "热心肠的组织者",
+        description: "你友善、有责任心，善于照顾他人的需求。像一位体贴的主人，让每个人都感到被重视。你重视和谐，善于协调，是团队的凝聚力来源。",
+        traits: ["善于合作", "热心助人", "注重和谐", "组织能力强"],
+        color: "#ff5722",
+        emoji: "🌺",
+      },
+      ENFJ: {
+        name: "主人公",
+        title: "富有魅力的领导者",
+        description: "你富有魅力，善于激励和引导他人。像一位鼓舞人心的导师，帮助他人发现自己的潜力。你有强烈的同理心，是天生的教育者和领导者。",
+        traits: ["领导力强", "善于沟通", "富有魅力", "关注他人"],
+        color: "#673ab7",
+        emoji: "👑",
+      },
+      ENTJ: {
+        name: "指挥官",
+        title: "果断自信的战略家",
+        description: "你果断、自信，是天生的领导者。像一位运筹帷幄的指挥官，带领团队攻克难关。你目标明确，效率极高，善于将愿景转化为现实。",
+        traits: ["战略思维", "果断决策", "高效执行", "自信坚定"],
+        color: "#3f51b5",
+        emoji: "🦁",
+      },
+    };
+
+    let currentQuestion = 0;
+    let answers = {};
+
+    function startQuiz() {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('fade-in');
+      currentQuestion = 0;
+      answers = {};
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const question = questions[currentQuestion];
+      document.getElementById('current-num').textContent = currentQuestion + 1;
+      document.getElementById('q-number').textContent = currentQuestion + 1;
+      document.getElementById('progress-percent').textContent = Math.round(((currentQuestion) / questions.length) * 100) + '%';
+      document.getElementById('progress-fill').style.width = ((currentQuestion) / questions.length) * 100 + '%';
+      document.getElementById('question-text').textContent = question.question;
+      document.getElementById('option-a').textContent = question.optionA.text;
+      document.getElementById('option-b').textContent = question.optionB.text;
+    }
+
+    function handleAnswer(option) {
+      const question = questions[currentQuestion];
+      answers[question.id] = option;
+      
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function calculatePersonalityType() {
+      const scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+      
+      questions.forEach(q => {
+        const answer = answers[q.id];
+        if (answer === 'A') {
+          scores[q.optionA.type]++;
+        } else {
+          scores[q.optionB.type]++;
+        }
+      });
+
+      const type = [
+        scores.E >= scores.I ? 'E' : 'I',
+        scores.S >= scores.N ? 'S' : 'N',
+        scores.T >= scores.F ? 'T' : 'F',
+        scores.J >= scores.P ? 'J' : 'P',
+      ].join('');
+
+      return type;
+    }
+
+    function showResult() {
+      const type = calculatePersonalityType();
+      const result = personalityTypes[type];
+      
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+      document.getElementById('result-screen').classList.add('fade-in');
+      
+      document.getElementById('result-icon').textContent = result.emoji;
+      document.getElementById('result-icon').style.backgroundColor = result.color;
+      document.getElementById('result-type').textContent = type;
+      document.getElementById('result-type').style.backgroundColor = result.color;
+      document.getElementById('result-name').textContent = result.name;
+      document.getElementById('result-title').textContent = result.title;
+      document.getElementById('result-description').textContent = result.description;
+      
+      const traitsContainer = document.getElementById('result-traits');
+      traitsContainer.innerHTML = '';
+      result.traits.forEach(trait => {
+        const traitEl = document.createElement('span');
+        traitEl.className = 'trait';
+        traitEl.textContent = trait;
+        traitsContainer.appendChild(traitEl);
+      });
+    }
+
+    function shareResult() {
+      const type = document.getElementById('result-type').textContent;
+      const title = document.getElementById('result-title').textContent;
+      const text = `我的性格类型是 ${type} — ${title}。来测测你的吧！${window.location.href}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: '性格测试结果',
+          text: text,
+          url: window.location.href,
+        });
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('结果已复制到剪贴板！');
+        });
+      }
+    }
+
+    function restartQuiz() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('welcome-screen').classList.remove('hidden');
+      document.getElementById('welcome-screen').classList.add('fade-in');
+      currentQuestion = 0;
+      answers = {};
+    }
+  </script>
+</body>
+</html>
